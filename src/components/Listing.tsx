@@ -1,12 +1,16 @@
 import React from "react";
 import "./Listing.css";
+import type { ValidEtsyListing } from "../types";
 
-const Listing = ({ items = [] }) => {
-  const truncateTitle = (title) => {
-    return title && title.length > 50 ? title.slice(0, 50) + "…" : title || "";
-  };
+interface ListingProps {
+  items: ValidEtsyListing[];
+}
 
-  const formatPrice = (price, currency_code) => {
+const Listing: React.FC<ListingProps> = ({ items }) => {
+  const truncateTitle = (title: string): string =>
+    title.length > 50 ? `${title.slice(0, 50)}…` : title;
+
+  const formatPrice = (price: string, currency_code: string): string => {
     const num = parseFloat(price);
     if (isNaN(num)) return price;
     const formatted = num.toFixed(2);
@@ -23,7 +27,7 @@ const Listing = ({ items = [] }) => {
     }
   };
 
-  const getStockClass = (qty) => {
+  const getStockClass = (qty: number): string => {
     if (qty <= 10) return "stock-low";
     if (qty <= 20) return "stock-medium";
     return "stock-high";
@@ -35,19 +39,17 @@ const Listing = ({ items = [] }) => {
         const title = truncateTitle(item.title);
         const priceDisplay = formatPrice(item.price, item.currency_code);
         const stockClass = getStockClass(item.quantity);
-        const imageUrl = item.MainImage?.url_570xN || "";
+        const imageUrl = item.MainImage.url_570xN.trim();
 
         return (
           <div key={item.listing_id} className="product-card">
             {item.is_digital && <span className="digital-badge">Digital</span>}
-            {imageUrl && (
-              <img
-                src={imageUrl}
-                alt={title}
-                className="product-image"
-                onError={(e) => (e.target.style.display = "none")}
-              />
-            )}
+            <img
+              src={imageUrl}
+              alt={title}
+              className="product-image"
+              onError={(e) => (e.currentTarget.style.display = "none")}
+            />
             <div className="product-info">
               <h3 className="product-title">{title}</h3>
               <div className="price-container">

@@ -94,27 +94,3 @@
   font-weight: 500;
   z-index: 1;
 }
-
-@media (max-width: 768px) {
-  .product-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 12px;
-  }
-
-  .product-image {
-    height: 180px;
-  }
-
-  .product-info {
-    padding: 10px;
-  }
-
-  .product-title {
-    font-size: 12px;
-    height: 32px;
-  }
-
-  .product-price {
-    font-size: 14px;
-  }
-}
